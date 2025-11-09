@@ -1,25 +1,96 @@
-<div style="display: flex; flex-wrap: wrap; gap: 10px; background-color: #f5f5f5; padding: 20px;">
-  <div style="width: 220px; height: 120px;">
-    <div class="tradingview-widget-container">
-      <div id="mini1"></div>
-      <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-      <script type="text/javascript">
-        new TradingView.widget({
-          "container_id": "mini1",
-          "symbol": "TVC:DXY",
-          "interval": "5",
-          "timezone": "Asia/Taipei",
-          "theme": "light",
-          "style": "1",
-          "locale": "zh_TW",
-          "hide_top_toolbar": true,
-          "hide_legend": true,
-          "save_image": false,
-          "width": "100%",
-          "height": "100%"
-        });
-      </script>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>金融總覽</title>
+  <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+  <style>
+    body {
+      background-color: #f5f5f5;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+    .market-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .market-card {
+      background-color: #ffffff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      width: 240px;
+      padding: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .market-title {
+      font-size: 1em;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #333;
+    }
+    .market-price {
+      font-size: 0.9em;
+      color: #666;
+      margin-bottom: 5px;
+    }
+    .market-chart {
+      width: 100%;
+      height: 100px;
+    }
+  </style>
+</head>
+<body>
+  <h1>📈 金融市場即時總覽</h1>
+  <div class="market-grid">
+    <div class="market-card">
+      <div class="market-title">美元指數 DXY</div>
+      <div class="market-price">即時報價：載入中…</div>
+      <div class="market-chart" id="chart1"></div>
     </div>
+    <div class="market-card">
+      <div class="market-title">美債10年殖利率</div>
+      <div class="market-price">即時報價：載入中…</div>
+      <div class="market-chart" id="chart2"></div>
+    </div>
+    <div class="market-card">
+      <div class="market-title">美元／日圓</div>
+      <div class="market-price">即時報價：載入中…</div>
+      <div class="market-chart" id="chart3"></div>
+    </div>
+    <!-- 可繼續新增更多商品 -->
   </div>
-  <!-- 可複製上方區塊換成不同 symbol -->
-</div>
+
+  <script>
+    const charts = [
+      { id: "chart1", symbol: "TVC:DXY" },
+      { id: "chart2", symbol: "CBOE:TNX" },
+      { id: "chart3", symbol: "FX:USDJPY" }
+    ];
+
+    charts.forEach(c => {
+      new TradingView.widget({
+        "container_id": c.id,
+        "symbol": c.symbol,
+        "interval": "5",
+        "timezone": "Asia/Taipei",
+        "theme": "light",
+        "style": "1",
+        "locale": "zh_TW",
+        "hide_top_toolbar": true,
+        "hide_legend": true,
+        "save_image": false,
+        "width": "100%",
+        "height": "100%"
+      });
+    });
+  </script>
+</body>
+</html>
