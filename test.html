@@ -90,7 +90,8 @@
     };
 
     async function fetchYahooQuote(symbol, domId) {
-      const url = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${symbol}`;
+      //const url = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${symbol}`;
+      const url = `https://corsproxy.io/?https://query1.finance.yahoo.com/v7/finance/quote?symbols=${symbol}`;
       try {
         const res = await fetch(url);
         const json = await res.json();
