@@ -10,6 +10,16 @@
       font-family: 'Segoe UI', sans-serif;
       padding: 24px;
     }
+    h1 {
+      color: #00bcd4;
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+    #datetime {
+      color: #ccc;
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
     .row {
       display: flex;
       gap: 20px;
@@ -40,18 +50,16 @@
 <body>
   <h1>匯率即時行情</h1>
   <div id="datetime"></div>
-  <!-- 第一行 -->
+
   <div class="row">
-    <div class="card"><div class="title">美國十年期公債</div><div class="price" id="US10Y"></div><div class="change" id="US10Y-change"></div></div>
+    <div class="card"><div class="title">美國十年期公債</div><div class="price" id="TNX"></div><div class="change" id="TNX-change"></div></div>
     <div class="card"><div class="title">美元指數</div><div class="price" id="DXY"></div><div class="change" id="DXY-change"></div></div>
   </div>
-  <!-- 第二行 -->
   <div class="row">
     <div class="card"><div class="title">美元/歐元</div><div class="price" id="EURUSD"></div><div class="change" id="EURUSD-change"></div></div>
     <div class="card"><div class="title">美元/英鎊</div><div class="price" id="GBPUSD"></div><div class="change" id="GBPUSD-change"></div></div>
     <div class="card"><div class="title">美元/日圓</div><div class="price" id="USDJPY"></div><div class="change" id="USDJPY-change"></div></div>
   </div>
-  <!-- 第三行 -->
   <div class="row">
     <div class="card"><div class="title">美元/台幣</div><div class="price" id="USDTWD"></div><div class="change" id="USDTWD-change"></div></div>
     <div class="card"><div class="title">美元/人民幣</div><div class="price" id="USDCNH"></div><div class="change" id="USDCNH-change"></div></div>
@@ -59,47 +67,6 @@
   </div>
 
   <script>
-    const apiKey = 'd48got9r01qnpsnnp3k0d48got9r01qnpsnnp3kg'; // ← 替換為你的 Finnhub API 金鑰
-    const symbols = {
-      US10Y: 'US10Y',
-      DXY: 'DXY',
-      EURUSD: 'OANDA:EUR_USD',
-      GBPUSD: 'OANDA:GBPUSD',
-      USDJPY: 'OANDA:USDJPY',
-      USDTWD: 'OANDA:USDTWD',
-      USDCNH: 'OANDA:USDCNH',
-      USDKRW: 'OANDA:USDKRW'
-    };
-
-    async function fetchQuote(symbol, domId) {
-      const url = `https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${apiKey}`;
-      try {
-        const res = await fetch(url);
-        const data = await res.json();
-        console.log(symbol, data); // 除錯用，可移除
-
-        const price = data.c !== undefined && data.c !== 0
-          ? data.c.toFixed(4)
-          : (data.pc !== undefined ? data.pc.toFixed(4) : 'N/A');
-
-        const change = data.d !== undefined && data.d !== null
-          ? ((data.d >= 0 ? '+' : '') + data.d.toFixed(4))
-          : '';
-
-        const color = data.d >= 0 ? '#4caf50' : '#f44336';
-
-        document.getElementById(domId).textContent = price;
-
-        const changeEl = document.getElementById(domId + '-change');
-        changeEl.textContent = change;
-        changeEl.style.color = change ? color : '#ccc';
-      } catch (err) {
-        console.error(`錯誤取得 ${symbol}:`, err);
-        document.getElementById(domId).textContent = '錯誤';
-        document.getElementById(domId + '-change').textContent = '';
-      }
-    }
-
     function updateDateTime() {
       const now = new Date();
       const options = {
@@ -111,14 +78,48 @@
       document.getElementById('datetime').textContent = formatted;
     }
 
-    function updateAllQuotes() {
-      for (const [id, symbol] of Object.entries(symbols)) {
-        fetchQuote(symbol, id);
+    const symbols = {
+      TNX: '^TNX',
+      DXY: 'DX-Y.NYB',
+      EURUSD: 'EURUSD=X',
+      GBPUSD: 'GBPUSD=X',
+      USDJPY: 'JPY=X',
+      USDTWD: 'TWD=X',
+      USDCNH: 'CNY=X',
+      USDKRW: 'KRW=X'
+    };
+
+    async function fetchYahooQuote(symbol, domId) {
+      const url = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${symbol}`;
+      try {
+        const res = await fetch(url);
+        const json = await res.json();
+        const data = json.quoteResponse.result[0];
+        const price = data.regularMarketPrice?.toFixed(4) || 'N/A';
+        const change = data.regularMarketChange?.toFixed(4) || '';
+        const color = data.regularMarketChange >= 0 ? '#4caf50' : '#f44336';
+
+        document.getElementById(domId).textContent = price;
+        const changeEl = document.getElementById(domId + '-change');
+        changeEl.textContent = (change >= 0 ? '+' : '') + change;
+        changeEl.style.color = change ? color : '#ccc';
+      } catch (err) {
+        document.getElementById(domId).textContent = '錯誤';
+        document.getElementById(domId + '-change').textContent = '';
       }
     }
+
+    function updateAllQuotes() {
+      for (const [id, symbol] of Object.entries(symbols)) {
+        fetchYahooQuote(symbol, id);
+      }
+    }
+
     updateDateTime();
-    updateAllQuotes(); // 初次載入
-    setInterval(updateAllQuotes, 120000); // 每兩分鐘刷新
+    updateAllQuotes();
+    //setInterval(updateDateTime, 1000);     // 每秒更新時間
+    setInterval(updateAllQuotes, 120000);  // 每兩分鐘刷新報價
   </script>
 </body>
 </html>
+
