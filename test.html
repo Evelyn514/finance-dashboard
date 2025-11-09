@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <title>匯率即時行情1</title>
+  <title>匯率即時行情</title>
   <style>
     body {
       background-color: #121212;
@@ -26,24 +26,12 @@
       margin-bottom: 20px;
       flex-wrap: wrap;
     }
-    .card {
+    .widget-box {
+      width: 300px;
+      height: 100px;
       background-color: #1e1e1e;
       border-radius: 8px;
-      padding: 12px;
-      width: 200px;
-      box-shadow: 0 0 8px rgba(0,0,0,0.5);
-    }
-    .title {
-      font-size: 14px;
-      margin-bottom: 6px;
-      color: #00bcd4;
-    }
-    .price {
-      font-size: 20px;
-      font-weight: bold;
-    }
-    .change {
-      font-size: 14px;
+      padding: 8px;
     }
   </style>
 </head>
@@ -51,38 +39,180 @@
   <h1>匯率即時行情</h1>
   <div id="datetime"></div>
 
-  <!-- 第一行：TradingView widget（只載入一次） -->
   <div class="row">
-    <div class="card">
-      <div class="title">美國十年期公債</div>
-      <iframe src="https://s.tradingview.com/embed-widget/mini-symbol-overview/?symbol=TVC%3AUS10Y&locale=zh_TW&colorTheme=dark" width="200" height="100" frameborder="0"></iframe>
+    <div class="widget-box">
+      <!-- 美國十年期公債 -->
+      <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js">
+        {
+          "symbol": "TVC:US10Y",
+          "width": "300",
+          "height": "100",
+          "locale": "zh_TW",
+          "dateRange": "1D",
+          "colorTheme": "dark",
+          "trendLineColor": "#00bcd4",
+          "underLineColor": "rgba(0, 188, 212, 0.15)",
+          "isTransparent": false,
+          "autosize": false,
+          "largeChartUrl": ""
+        }
+        </script>
+      </div>
     </div>
-    <div class="card">
-      <div class="title">美元指數</div>
-      <iframe src="https://s.tradingview.com/embed-widget/mini-symbol-overview/?symbol=TVC%3ADXY&locale=zh_TW&colorTheme=dark" width="200" height="100" frameborder="0"></iframe>
+    <div class="widget-box">
+      <!-- 美元指數 -->
+      <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js">
+        {
+          "symbol": "TVC:DXY",
+          "width": "300",
+          "height": "100",
+          "locale": "zh_TW",
+          "dateRange": "1D",
+          "colorTheme": "dark",
+          "trendLineColor": "#00bcd4",
+          "underLineColor": "rgba(0, 188, 212, 0.15)",
+          "isTransparent": false,
+          "autosize": false,
+          "largeChartUrl": ""
+        }
+        </script>
+      </div>
     </div>
   </div>
 
-  <!-- 第二行：Finnhub API（每兩分鐘刷新） -->
   <div class="row">
-    <div class="card"><div class="title">美元/歐元</div><div class="price" id="EURUSD"></div><div class="change" id="EURUSD-change"></div></div>
-    <div class="card"><div class="title">美元/英鎊</div><div class="price" id="GBPUSD"></div><div class="change" id="GBPUSD-change"></div></div>
-    <div class="card"><div class="title">美元/日圓</div><div class="price" id="USDJPY"></div><div class="change" id="USDJPY-change"></div></div>
+    <div class="widget-box">
+      <!-- 美元/歐元 -->
+      <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js">
+        {
+          "symbol": "FX:EURUSD",
+          "width": "300",
+          "height": "100",
+          "locale": "zh_TW",
+          "dateRange": "1D",
+          "colorTheme": "dark",
+          "trendLineColor": "#00bcd4",
+          "underLineColor": "rgba(0, 188, 212, 0.15)",
+          "isTransparent": false,
+          "autosize": false,
+          "largeChartUrl": ""
+        }
+        </script>
+      </div>
+    </div>
+    <div class="widget-box">
+      <!-- 美元/英鎊 -->
+      <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js">
+        {
+          "symbol": "FX:GBPUSD",
+          "width": "300",
+          "height": "100",
+          "locale": "zh_TW",
+          "dateRange": "1D",
+          "colorTheme": "dark",
+          "trendLineColor": "#00bcd4",
+          "underLineColor": "rgba(0, 188, 212, 0.15)",
+          "isTransparent": false,
+          "autosize": false,
+          "largeChartUrl": ""
+        }
+        </script>
+      </div>
+    </div>
+    <div class="widget-box">
+      <!-- 美元/日圓 -->
+      <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js">
+        {
+          "symbol": "FX:USDJPY",
+          "width": "300",
+          "height": "100",
+          "locale": "zh_TW",
+          "dateRange": "1D",
+          "colorTheme": "dark",
+          "trendLineColor": "#00bcd4",
+          "underLineColor": "rgba(0, 188, 212, 0.15)",
+          "isTransparent": false,
+          "autosize": false,
+          "largeChartUrl": ""
+        }
+        </script>
+      </div>
+    </div>
   </div>
 
-  <!-- 第三行：TradingView widget（只載入一次） -->
   <div class="row">
-    <div class="card">
-      <div class="title">美元/台幣</div>
-      <iframe src="https://s.tradingview.com/embed-widget/mini-symbol-overview/?symbol=FX%3AUSDTWD&locale=zh_TW&colorTheme=dark" width="200" height="100" frameborder="0"></iframe>
+    <div class="widget-box">
+      <!-- 美元/台幣 -->
+      <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js">
+        {
+          "symbol": "FX:USDTWD",
+          "width": "300",
+          "height": "100",
+          "locale": "zh_TW",
+          "dateRange": "1D",
+          "colorTheme": "dark",
+          "trendLineColor": "#00bcd4",
+          "underLineColor": "rgba(0, 188, 212, 0.15)",
+          "isTransparent": false,
+          "autosize": false,
+          "largeChartUrl": ""
+        }
+        </script>
+      </div>
     </div>
-    <div class="card">
-      <div class="title">美元/人民幣</div>
-      <iframe src="https://s.tradingview.com/embed-widget/mini-symbol-overview/?symbol=FX%3AUSDCNH&locale=zh_TW&colorTheme=dark" width="200" height="100" frameborder="0"></iframe>
+    <div class="widget-box">
+      <!-- 美元/人民幣 -->
+      <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js">
+        {
+          "symbol": "FX:USDCNH",
+          "width": "300",
+          "height": "100",
+          "locale": "zh_TW",
+          "dateRange": "1D",
+          "colorTheme": "dark",
+          "trendLineColor": "#00bcd4",
+          "underLineColor": "rgba(0, 188, 212, 0.15)",
+          "isTransparent": false,
+          "autosize": false,
+          "largeChartUrl": ""
+        }
+        </script>
+      </div>
     </div>
-    <div class="card">
-      <div class="title">美元/韓圜</div>
-      <iframe src="https://s.tradingview.com/embed-widget/mini-symbol-overview/?symbol=FX%3AUSDKRW&locale=zh_TW&colorTheme=dark" width="200" height="100" frameborder="0"></iframe>
+    <div class="widget-box">
+      <!-- 美元/韓圜 -->
+      <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js">
+        {
+          "symbol": "FX:USDKRW",
+          "width": "300",
+          "height": "100",
+          "locale": "zh_TW",
+          "dateRange": "1D",
+          "colorTheme": "dark",
+          "trendLineColor": "#00bcd4",
+          "underLineColor": "rgba(0, 188, 212, 0.15)",
+          "isTransparent": false,
+          "autosize": false,
+          "largeChartUrl": ""
+        }
+        </script>
+      </div>
     </div>
   </div>
 
@@ -98,42 +228,17 @@
       document.getElementById('datetime').textContent = formatted;
     }
 
-    const apiKey = 'YOUR_API_KEY'; // ← 替換為你的 Finnhub API 金鑰
-    const symbols = {
-      EURUSD: 'OANDA:EURUSD',
-      GBPUSD: 'OANDA:GBPUSD',
-      USDJPY: 'OANDA:USDJPY'
-    };
-
-    async function fetchQuote(symbol, domId) {
-      const url = `https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${apiKey}`;
-      try {
-        const res = await fetch(url);
-        const data = await res.json();
-        const price = data.c?.toFixed(4) || 'N/A';
-        const change = data.d !== undefined ? ((data.d >= 0 ? '+' : '') + data.d.toFixed(4)) : '';
-        const color = data.d >= 0 ? '#4caf50' : '#f44336';
-
-        document.getElementById(domId).textContent = price;
-        const changeEl = document.getElementById(domId + '-change');
-        changeEl.textContent = change;
-        changeEl.style.color = change ? color : '#ccc';
-      } catch (err) {
-        document.getElementById(domId).textContent = '錯誤';
-        document.getElementById(domId + '-change').textContent = '';
-      }
-    }
-
-    function updateQuotes() {
+    function updateAllQuotes() {
       for (const [id, symbol] of Object.entries(symbols)) {
-        fetchQuote(symbol, id);
+        fetchYahooQuote(symbol, id);
       }
     }
 
     updateDateTime();
-    updateQuotes(); // 初次載入
+    updateAllQuotes();
     //setInterval(updateDateTime, 1000);     // 每秒更新時間
-    //setInterval(updateQuotes, 120000);     // 每兩分鐘刷新報價
+    setInterval(updateAllQuotes, 120000);  // 每兩分鐘刷新報價
   </script>
 </body>
 </html>
+
