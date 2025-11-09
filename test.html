@@ -2,8 +2,10 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <title>迷你匯率走勢圖</title>
+  <title>迷你匯率走勢圖（含時間軸）</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/luxon"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon"></script>
   <style>
     body {
       background-color: #121212;
@@ -47,21 +49,24 @@
   </div>
 
   <script>
-    function generateRandomData(base, fluctuation = 0.005) {
+    function generateTimeSeries(base, fluctuation = 0.005) {
       const data = [];
+      const now = luxon.DateTime.local().startOf('day').plus({ hours: 9 }); // 從早上 9 點開始
       let value = base;
       for (let i = 0; i < 20; i++) {
         value += (Math.random() - 0.5) * fluctuation;
-        data.push(parseFloat(value.toFixed(4)));
+        data.push({
+          x: now.plus({ minutes: i * 30 }).toISO(),
+          y: parseFloat(value.toFixed(4))
+        });
       }
       return data;
     }
 
-    function renderMiniChart(canvasId, data) {
+    function renderChart(canvasId, data) {
       new Chart(document.getElementById(canvasId), {
         type: 'line',
         data: {
-          labels: Array(data.length).fill(''),
           datasets: [{
             data: data,
             borderColor: '#00bcd4',
@@ -75,16 +80,29 @@
           responsive: true,
           plugins: { legend: { display: false } },
           scales: {
-            x: { display: false },
-            y: { display: false }
+            x: {
+              type: 'time',
+              time: {
+                unit: 'hour',
+                displayFormats: { hour: 'HH:mm' }
+              },
+              ticks: {
+                color: '#ccc',
+                maxTicksLimit: 4
+              },
+              grid: { display: false }
+            },
+            y: {
+              display: false
+            }
           }
         }
       });
     }
 
-    renderMiniChart('eurusd', generateRandomData(1.075));
-    renderMiniChart('usdjpy', generateRandomData(150.25));
-    renderMiniChart('usdtwd', generateRandomData(32.15));
+    renderChart('eurusd', generateTimeSeries(1.075));
+    renderChart('usdjpy', generateTimeSeries(150.25));
+    renderChart('usdtwd', generateTimeSeries(32.15));
   </script>
 </body>
 </html>
