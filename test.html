@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <title>即時行情區塊</title>
+  <title>匯率即時行情</title>
   <style>
     body {
       background-color: #121212;
@@ -38,6 +38,8 @@
   </style>
 </head>
 <body>
+  <h1>匯率即時行情</h1>
+  <div id="datetime"></div>
   <!-- 第一行 -->
   <div class="row">
     <div class="card"><div class="title">美國十年期公債</div><div class="price" id="US10Y"></div><div class="change" id="US10Y-change"></div></div>
@@ -98,12 +100,23 @@
       }
     }
 
+    function updateDateTime() {
+      const now = new Date();
+      const options = {
+        year: 'numeric', month: '2-digit', day: '2-digit',
+        hour: '2-digit', minute: '2-digit', second: '2-digit',
+        hour12: false
+      };
+      const formatted = now.toLocaleString('zh-TW', options).replace(',', '');
+      document.getElementById('datetime').textContent = formatted;
+    }
+
     function updateAllQuotes() {
       for (const [id, symbol] of Object.entries(symbols)) {
         fetchQuote(symbol, id);
       }
     }
-
+    updateDateTime();
     updateAllQuotes(); // 初次載入
     setInterval(updateAllQuotes, 120000); // 每兩分鐘刷新
   </script>
