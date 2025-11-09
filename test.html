@@ -74,8 +74,8 @@
       try {
         const res = await fetch(url);
         const data = await res.json();
-        const price = data.c?.toFixed(4) || 'N/A';
-        const change = (data.d >= 0 ? '+' : '') + data.d?.toFixed(4);
+        const price = data.c !== undefined ? data.c.toFixed(4) : (data.pc?.toFixed(4) || 'N/A');
+        const change = data.d !== undefined ? ((data.d >= 0 ? '+' : '') + data.d.toFixed(4)) : '';
         const color = data.d >= 0 ? '#4caf50' : '#f44336';
         document.getElementById(domId).textContent = price;
         const changeEl = document.getElementById(domId + '-change');
