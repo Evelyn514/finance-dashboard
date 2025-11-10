@@ -58,17 +58,17 @@
   <h1>匯率即時行情</h1>
   <div id="datetime"></div>
 
-  <!-- 第一行：即時數值 + TradingView連結 -->
+  <!-- 第一行：動態數據 -->
   <div class="row">
     <div class="card">
       <div class="title">美國十年期公債</div>
       <div class="price" id="US10Y">載入中...</div>
-      <a class="link" href="https://tw.tradingview.com/symbols/TVC-US10Y/" target="_blank">查看 TradingView</a>
+      <a class="link" href="https://tw.tradingview.com/symbols/TVC-US10Y/?locale=zh_TW" target="_blank">查看 TradingView</a>
     </div>
     <div class="card">
       <div class="title">美元指數</div>
       <div class="price" id="DXY">載入中...</div>
-      <a class="link" href="https://tw.tradingview.com/symbols/TVC-DXY/" target="_blank">查看 TradingView</a>
+      <a class="link" href="https://tw.tradingview.com/symbols/TVC-DXY/?locale=zh_TW" target="_blank">查看 TradingView</a>
     </div>
   </div>
 
@@ -88,7 +88,7 @@
     </div>
   </div>
 
-  <!-- 第三行：即時數值 + Investing.com連結 -->
+  <!-- 第三行：動態數據 -->
   <div class="row">
     <div class="card">
       <div class="title">美元/台幣</div>
@@ -118,23 +118,29 @@
       document.getElementById('datetime').textContent = formatted;
     }
 
-    // 模擬即時數據（你可以改成從後端 API 抓取）
-    const staticPrices = {
-      US10Y: '4.393%',
-      DXY: '99.54',
-      USDTWD: '30.968',
-      USDKRW: '1455.84'
-    };
-
-    function loadStaticPrices() {
-      for (const [id, value] of Object.entries(staticPrices)) {
-        document.getElementById(id).textContent = value;
+    async function fetchPrice(symbol, targetId) {
+      const url = `https://www.bing.com/search?q=${encodeURIComponent(symbol)}+price`;
+      const proxy = `https://corsproxy.io/?${encodeURIComponent(url)}`;
+      try {
+        const res = await fetch(proxy);
+        const html = await res.text();
+        const match = html.match(/([0-9]+\.[0-9]+)/);
+        document.getElementById(targetId).textContent = match ? match[1] : '無法取得';
+      } catch (err) {
+        document.getElementById(targetId).textContent = '錯誤';
       }
     }
 
+    function loadLivePrices() {
+      fetchPrice('US10Y index', 'US10Y');
+      fetchPrice('DXY index', 'DXY');
+      fetchPrice('USDTWD currency exchange rate', 'USDTWD');
+      fetchPrice('USDKRW currency exchange rate', 'USDKRW');
+    }
+
     updateDateTime();
-    loadStaticPrices();
-    //setInterval(updateDateTime, 1000);
+    loadLivePrices();
+    setInterval(updateDateTime, 1000);
   </script>
 </body>
 </html>
